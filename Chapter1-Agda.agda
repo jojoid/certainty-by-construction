@@ -20,16 +20,10 @@ module Booleans where
   
   _ : not (not false) ≡ false
   _ = refl
-
-  _∨₁_ : Bool → Bool → Bool
-  false ∨₁ false = false
-  false ∨₁ true  = true
-  true ∨₁ false  = true
-  true ∨₁ true   = true
   
-  _∨₂_ : Bool → Bool → Bool
-  false ∨₂ other = other
-  true ∨₂ other  = true
+  _∨_ : Bool → Bool → Bool
+  false ∨ other = other
+  true ∨ other  = true
   
   _∧_ : Bool → Bool → Bool
   false ∧ other = false
@@ -73,7 +67,7 @@ module Sandbox-Tuples where
   open _×_
   
   my-tuple : Bool × Bool
-  my-tuple = record { proj₁ = true ∨₂ true ; proj₂ = not true }
+  my-tuple = record { proj₁ = true ∨ true ; proj₂ = not true }
   
   first : Bool × Bool → Bool
   first record { proj₁ = x } = x
@@ -99,7 +93,7 @@ module Sandbox-Tuples where
   infixr 4 _,_
   
   my-tuple′ : Bool × Bool
-  my-tuple′ = true ∨₂ true , not true
+  my-tuple′ = true ∨ true , not true
 
 module Sandbox-Tuples₂ where
   open Booleans
@@ -159,3 +153,46 @@ module Sandbox-Tuples₂ where
   uncurry : {A B C : Set} → (A → B → C) → A × B → C
   uncurry f = λ x → f (x .proj₁) (x .proj₂)
   
+  _ : Bool × Bool → Bool
+  _ = uncurry _∨_
+
+module Sandbox-Implicits where
+  open import Data.Bool
+    using (Bool; false; true; not; _∨_)
+  open import Data.Product
+    using (_×_; proj₁; proj₂)
+    renaming
+      ( _,′_ to _,_
+      ; curry′ to curry
+      ; uncurry′ to uncurry
+      )
+  
+  mk-tuple : (A B : Set) → A → B → A × B
+  mk-tuple A B x x₁ = x , x₁
+  
+  _ : Bool × Bool
+  _ = mk-tuple Bool Bool false true
+  
+  data PrimaryColor : Set where
+    red green blue : PrimaryColor
+  
+  color-bool-tuple : PrimaryColor × Bool
+  color-bool-tuple  = mk-tuple _ _ red false
+  
+  mk-color-bool-tuple
+    : PrimaryColor
+    → Bool
+    → PrimaryColor × Bool
+  mk-color-bool-tuple = _,_ {A = PrimaryColor} {B = Bool}
+
+open import Data.Bool
+  using (Bool; false; true; not; _∨_; _∧_)
+  public
+
+open import Data.Product
+  using (_×_; _,_; proj₁; proj₂; curry; uncurry)
+  public
+
+open import Data.Sum
+  using (_⊎_; inj₁; inj₂)
+  public
