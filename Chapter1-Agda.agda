@@ -110,6 +110,8 @@ module Sandbox-Tuples₂ where
       proj₁ : A
       proj₂ : B
   
+  infixr 2 _×_
+
   open _×_
 
   my-tuple′ : Bool × Bool
@@ -150,4 +152,10 @@ module Sandbox-Tuples₂ where
   
   _ : Bool
   _ = or (true , false)
+  
+  curry : {A B C : Set} → (A × B → C) → A → B → C
+  curry f = λ a b → f (a , b)
+
+  uncurry : {A B C : Set} → (A → B → C) → A × B → C
+  uncurry f = λ x → f (x .proj₁) (x .proj₂)
   
