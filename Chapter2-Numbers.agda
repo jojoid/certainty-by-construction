@@ -13,6 +13,18 @@ module Sandbox-Naturals where
   open Chapter1-Agda
     using (Bool; true; false)
   
+  one : ℕ
+  one = suc zero
+
+  two : ℕ
+  two = suc one
+
+  three : ℕ
+  three = suc two
+
+  four : ℕ
+  four = suc three
+  
   n=0? : ℕ → Bool
   n=0? zero = true
   n=0? (suc x) = false
@@ -25,4 +37,22 @@ module Sandbox-Naturals where
   even? zero = true
   even? (suc zero) = false
   even? (suc (suc x)) = even? x
+  
+  data IsEven : ℕ → Set where
+    zero-even    : IsEven zero
+    suc-suc-even : {n : ℕ} → IsEven n → IsEven (suc (suc n))
+  
+  four-is-even : IsEven four
+  four-is-even = suc-suc-even (suc-suc-even zero-even)
+  
+  data IsOdd : ℕ → Set where
+    one-odd     : IsOdd one
+    suc-suc-odd : {n : ℕ} → IsOdd n → IsOdd (suc (suc n))
+  
+  data IsOdd′ : ℕ → Set where
+    is-odd : {n : ℕ} → IsEven n → IsOdd′ (suc n)
+  
+  evenOdd : {n : ℕ} → IsEven n → IsOdd (suc n)
+  evenOdd zero-even = one-odd
+  evenOdd (suc-suc-even x) = suc-suc-odd (evenOdd x)
   
