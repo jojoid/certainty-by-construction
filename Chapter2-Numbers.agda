@@ -21,3 +21,8 @@ module Sandbox-Naturals where
   n=2? (suc (suc zero)) = true
   n=2? _ = false
   
+  even? : ℕ → Bool
+  even? zero = true
+  even? (suc zero) = false
+  even? (suc (suc x)) = even? x
+  
