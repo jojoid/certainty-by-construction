@@ -56,3 +56,14 @@ module Sandbox-Naturals where
   evenOdd zero-even = one-odd
   evenOdd (suc-suc-even x) = suc-suc-odd (evenOdd x)
   
+  data Maybe (A : Set) : Set where
+    just    : A → Maybe A
+    nothing :     Maybe A
+  
+  evenEv : (n : ℕ) → Maybe (IsEven n)
+  evenEv zero = just zero-even
+  evenEv (suc zero) = nothing
+  evenEv (suc (suc n)) with evenEv n
+  ... | just x = just (suc-suc-even x)
+  ... | nothing = nothing
+  
