@@ -67,3 +67,9 @@ module Sandbox-Naturals where
   ... | just x = just (suc-suc-even x)
   ... | nothing = nothing
   
+  _+_ : ℕ → ℕ → ℕ
+  zero + y = y
+  suc x + y = suc (x + y)
+  
+  infixl 6 _+_
+  
