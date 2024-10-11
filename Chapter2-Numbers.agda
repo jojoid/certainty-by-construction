@@ -26,16 +26,16 @@ module Sandbox-Naturals where
   four = suc three
   
   n=0? : ℕ → Bool
-  n=0? zero = true
+  n=0? zero    = true
   n=0? (suc x) = false
   
   n=2? : ℕ → Bool
   n=2? (suc (suc zero)) = true
-  n=2? _ = false
+  n=2? _                = false
   
   even? : ℕ → Bool
-  even? zero = true
-  even? (suc zero) = false
+  even? zero          = true
+  even? (suc zero)    = false
   even? (suc (suc x)) = even? x
   
   data IsEven : ℕ → Set where
@@ -53,7 +53,7 @@ module Sandbox-Naturals where
     is-odd : {n : ℕ} → IsEven n → IsOdd′ (suc n)
   
   evenOdd : {n : ℕ} → IsEven n → IsOdd (suc n)
-  evenOdd zero-even = one-odd
+  evenOdd zero-even        = one-odd
   evenOdd (suc-suc-even x) = suc-suc-odd (evenOdd x)
   
   data Maybe (A : Set) : Set where
@@ -61,14 +61,14 @@ module Sandbox-Naturals where
     nothing :     Maybe A
   
   evenEv : (n : ℕ) → Maybe (IsEven n)
-  evenEv zero = just zero-even
+  evenEv zero       = just zero-even
   evenEv (suc zero) = nothing
   evenEv (suc (suc n)) with evenEv n
-  ... | just x = just (suc-suc-even x)
-  ... | nothing = nothing
+  ... | just x      = just (suc-suc-even x)
+  ... | nothing     = nothing
   
   _+_ : ℕ → ℕ → ℕ
-  zero + y = y
+  zero  + y  = y
   suc x + y = suc (x + y)
   
   infixl 6 _+_
@@ -90,12 +90,17 @@ module Sandbox-Naturals where
     even?′ (2suc (2suc n)) = even?′ n
   
   _*_ : ℕ → ℕ → ℕ
-  zero * b = zero
+  zero  * b  = zero
   suc a * b = b + a * b
   
   infixl 7 _*_
   
   _^_ : ℕ → ℕ → ℕ
-  a ^ zero = one
+  a ^ zero  = one
   a ^ suc b = a * a ^ b
+  
+  _∸_ : ℕ → ℕ → ℕ
+  x     ∸ zero      = x
+  zero  ∸ suc y  = zero
+  suc x ∸ suc y = x ∸ y
   
