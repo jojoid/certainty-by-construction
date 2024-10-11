@@ -136,4 +136,38 @@ module Misstep-Integers₁ where
     = normalize
         (mkℤ (pos ℕ.* pos₁ ℕ.+ neg ℕ.* neg₁)
              (pos ℕ.* neg₁ ℕ.+ pos₁ ℕ.* neg))
+
+module Misstep-Integers₂ where
+  open import Data.Nat
   
+  data ℤ : Set where
+    +_ : ℕ → ℤ
+    -_ : ℕ → ℤ
+
+module Sandbox-Integers where
+  import Data.Nat as ℕ
+  open ℕ using (ℕ)
+  
+  data ℤ : Set where
+    +_     : ℕ → ℤ
+    -[1+_] : ℕ → ℤ
+  
+  0ℤ : ℤ
+  0ℤ = + 0
+
+  1ℤ : ℤ
+  1ℤ = + 1
+
+  -1ℤ : ℤ
+  -1ℤ = -[1+ 0 ]
+  
+  suc : ℤ → ℤ
+  suc (+ x)          = + ℕ.suc x
+  suc -[1+ ℕ.zero ]  = 0ℤ
+  suc -[1+ ℕ.suc x ] = -[1+ x ]
+  
+  pred : ℤ → ℤ
+  pred (+ ℕ.zero) = -1ℤ
+  pred (+ ℕ.suc x) = + x  
+  pred -[1+ x ] = -[1+ ℕ.suc x ]
+   
