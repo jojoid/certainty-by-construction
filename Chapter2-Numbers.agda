@@ -104,7 +104,7 @@ module Sandbox-Naturals where
   zero  ∸ suc y  = zero
   suc x ∸ suc y = x ∸ y
 
-module Misstep-Integers₁ where
+module Misstep-Integers where
   import Data.Nat as ℕ
   open ℕ using (ℕ; zero; suc)
   
@@ -136,13 +136,6 @@ module Misstep-Integers₁ where
     = normalize
         (mkℤ (pos ℕ.* pos₁ ℕ.+ neg ℕ.* neg₁)
              (pos ℕ.* neg₁ ℕ.+ pos₁ ℕ.* neg))
-
-module Misstep-Integers₂ where
-  open import Data.Nat
-  
-  data ℤ : Set where
-    +_ : ℕ → ℤ
-    -_ : ℕ → ℤ
 
 module Sandbox-Integers where
   import Data.Nat as ℕ
