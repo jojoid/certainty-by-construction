@@ -170,4 +170,4 @@ module Sandbox-Integers where
   pred (+ ℕ.zero) = -1ℤ
   pred (+ ℕ.suc x) = + x  
   pred -[1+ x ] = -[1+ ℕ.suc x ]
-   
+  
