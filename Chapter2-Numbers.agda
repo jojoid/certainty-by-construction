@@ -103,4 +103,37 @@ module Sandbox-Naturals where
   x     ∸ zero      = x
   zero  ∸ suc y  = zero
   suc x ∸ suc y = x ∸ y
+
+module Misstep-Integers₁ where
+  import Data.Nat as ℕ
+  open ℕ using (ℕ; zero; suc)
+  
+  record ℤ : Set where
+    constructor mkℤ
+    field
+      pos : ℕ
+      neg : ℕ
+  
+  normalize : ℤ → ℤ
+  normalize (mkℤ zero y)          = mkℤ zero y
+  normalize (mkℤ (suc x) zero)    = mkℤ (suc x) zero
+  normalize (mkℤ (suc x) (suc y)) = mkℤ x y
+  
+  _+_ : ℤ → ℤ → ℤ
+  mkℤ pos neg + mkℤ pos₁ neg₁
+    = normalize (mkℤ (pos ℕ.+ pos₁) (neg ℕ.+ neg₁))
+  
+  infixl 5 _+_
+  
+  _-_ : ℤ → ℤ → ℤ
+  mkℤ pos neg - mkℤ pos₁ neg₁
+    = normalize (mkℤ (pos ℕ.+ neg₁) (neg ℕ.+ pos₁))
+  
+  infixl 5 _-_
+  
+  _*_ : ℤ → ℤ → ℤ
+  mkℤ pos neg * mkℤ pos₁ neg₁
+    = normalize
+        (mkℤ (pos ℕ.* pos₁ ℕ.+ neg ℕ.* neg₁)
+             (pos ℕ.* neg₁ ℕ.+ pos₁ ℕ.* neg))
   
