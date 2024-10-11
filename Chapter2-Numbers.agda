@@ -73,19 +73,29 @@ module Sandbox-Naturals where
   
   infixl 6 _+_
 
-module Example-Silly where
-  open Chapter1-Agda
-    using (Bool; true; false; not)
+  module Example-Silly where
+    open Chapter1-Agda
+      using (Bool; true; false; not)
+    
+    data ℕ′ : Set where
+      zero : ℕ′
+      suc  : ℕ′ → ℕ′
+      2suc : ℕ′ → ℕ′
+    
+    even?′ : ℕ′ → Bool
+    even?′ zero            = true
+    even?′ (suc n)         = not (even?′ n)
+    even?′ (2suc zero)     = true
+    even?′ (2suc (suc n))  = not (even?′ n)
+    even?′ (2suc (2suc n)) = even?′ n
   
-  data ℕ′ : Set where
-    zero : ℕ′
-    suc  : ℕ′ → ℕ′
-    2suc : ℕ′ → ℕ′
+  _*_ : ℕ → ℕ → ℕ
+  zero * b = zero
+  suc a * b = b + a * b
   
-  even?′ : ℕ′ → Bool
-  even?′ zero            = true
-  even?′ (suc n)         = not (even?′ n)
-  even?′ (2suc zero)     = true
-  even?′ (2suc (suc n))  = not (even?′ n)
-  even?′ (2suc (2suc n)) = even?′ n
+  infixl 7 _*_
+  
+  _^_ : ℕ → ℕ → ℕ
+  a ^ zero = one
+  a ^ suc b = a * a ^ b
   
