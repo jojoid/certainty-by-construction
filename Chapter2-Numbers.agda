@@ -164,3 +164,11 @@ module Sandbox-Integers where
   pred (+ ℕ.suc x) = + x  
   pred -[1+ x ] = -[1+ ℕ.suc x ]
   
+  pattern +[1+_] n = + ℕ.suc n
+  pattern +0 = + ℕ.zero
+
+  -_ : ℤ → ℤ
+  - (+0)     = 0ℤ
+  - +[1+ x ] = -[1+ x ]
+  - -[1+ x ] = +[1+ x ]
+  
