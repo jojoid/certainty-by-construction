@@ -145,8 +145,10 @@ module Sandbox-Integers where
     +_     : ℕ → ℤ
     -[1+_] : ℕ → ℤ
   
+  pattern +[0] = + ℕ.zero
+  pattern -[1] = -[1+ ℕ.zero ]
   pattern +[1+_] n = + ℕ.suc n
-  pattern +0 = + ℕ.zero
+  pattern -[2+_] n = -[1+ ℕ.suc n ]
   
   0ℤ : ℤ
   0ℤ = + 0
@@ -158,17 +160,17 @@ module Sandbox-Integers where
   -1ℤ = -[1+ 0 ]
   
   suc : ℤ → ℤ
-  suc (+ x)          = +[1+ x ]
-  suc -[1+ ℕ.zero ]  = 0ℤ
-  suc -[1+ ℕ.suc x ] = -[1+ x ]
+  suc (+ x)    = +[1+ x ]
+  suc -[1]     = 0ℤ
+  suc -[2+ x ] = -[1+ x ]
   
   pred : ℤ → ℤ
-  pred (+0) = -1ℤ
-  pred (+[1+ x ]) = + x  
-  pred -[1+ x ]   = -[1+ ℕ.suc x ]
+  pred +[0]     = -1ℤ
+  pred +[1+ x ] = + x  
+  pred -[1+ x ] = -[2+ x ]
 
   -_ : ℤ → ℤ
-  - (+0)     = 0ℤ
+  - +[0]     = 0ℤ
   - +[1+ x ] = -[1+ x ]
   - -[1+ x ] = +[1+ x ]
   
