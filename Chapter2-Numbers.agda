@@ -70,10 +70,8 @@ module Sandbox-Naturals where
   infixl 6 _+_
 
   _+_ : ℕ → ℕ → ℕ
-  zero  + y  = y
+  zero  + y = y
   suc x + y = suc (x + y)
-
-  infixl 7 _*_
 
   module Example-Silly where
     open Chapter1-Agda
@@ -90,6 +88,8 @@ module Sandbox-Naturals where
     even?′ (2suc zero)     = true
     even?′ (2suc (suc n))  = not (even?′ n)
     even?′ (2suc (2suc n)) = even?′ n
+  
+  infixl 7 _*_
   
   _*_ : ℕ → ℕ → ℕ
   zero  * b  = zero
@@ -169,14 +169,31 @@ module Sandbox-Integers where
   pred +[1+ x ] = + x  
   pred -[1+ x ] = -[2+ x ]
   
-  module Naive-Addition where
-    
-    _+_ : ℤ → ℤ → ℤ
-    +[0] + x₁            = x₁
-    +[1+ x ] + +[0]      = +[1+ x ]
-    +[1+ x ] + +[1+ x₁ ] = +[1+ 1 ℕ.+ x ℕ.+ x₁ ]
-    +[1+ x ] + -[1+ x₁ ] = {!   !}
-    -[1+ x ] + +[0]      = -[1+ x ]
-    -[1+ x ] + +[1+ x₁ ] = {!   !}
-    -[1+ x ] + -[1+ x₁ ] = -[2+ x ℕ.+ x₁ ]
-    
+  _⊖_ : ℕ → ℕ → ℤ
+  0       ⊖ 0       = +[0]
+  0       ⊖ [1+ n ] = -[1+ n ]
+  [1+ n ] ⊖ 0       = +[1+ n ]
+  [1+ m ] ⊖ [1+ n ] = m ⊖ n
+  
+  infixl 5 _+_
+
+  _+_ : ℤ → ℤ → ℤ
+  + x      + + y      = + (x ℕ.+ y)
+  + x      + -[1+ y ] = x ⊖ [1+ y ]
+  -[1+ x ] + + y      = y ⊖ [1+ x ]
+  -[1+ x ] + -[1+ y ] = -[2+ x ℕ.+ y ]
+  
+  infixl 5 _-_
+
+  _-_ : ℤ → ℤ → ℤ
+  x - y = x + (- y)
+  
+  infixl 6 _*_
+
+  _*_ : ℤ → ℤ → ℤ
+  x * +[0]      = +[0]
+  x * +[1+ 0 ]  = x
+  x * -[1+ 0 ]  = - x
+  x * +[2+ x₁ ] = +[1+ x₁ ] * x + x
+  x * -[2+ x₁ ] = -[1+ x₁ ] * x - x
+  
