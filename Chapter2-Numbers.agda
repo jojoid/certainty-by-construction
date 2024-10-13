@@ -148,6 +148,7 @@ module Sandbox-Integers where
   pattern [1+_] n  = ℕ.suc n
   pattern +[0]     = + 0
   pattern -[0]     = + 0
+  pattern +[1]     = + 1
   pattern -[1]     = -[1+ 0 ]
   pattern +[1+_] n = + [1+ n ]
   pattern +[2+_] n = +[1+ [1+ n ] ]
@@ -164,7 +165,7 @@ module Sandbox-Integers where
   -- suc -[2+ x ] = -[1+ x ]
 
   suc : ℤ → ℤ
-  suc +[0]     = + 1
+  suc +[0]     = +[1]
   suc +[1+ x ] = +[2+ x ]
   suc -[1+ x ] = - (+ x)
   
