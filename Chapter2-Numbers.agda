@@ -159,11 +159,6 @@ module Sandbox-Integers where
   - +[1+ x ] = -[1+ x ]
   - -[1+ x ] = +[1+ x ]
   
-  -- suc : ℤ → ℤ
-  -- suc (+ x)    = +[1+ x ]
-  -- suc -[1]     = +[0]
-  -- suc -[2+ x ] = -[1+ x ]
-
   suc : ℤ → ℤ
   suc +[0]     = +[1]
   suc +[1+ x ] = +[2+ x ]
