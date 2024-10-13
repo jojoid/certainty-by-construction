@@ -67,11 +67,13 @@ module Sandbox-Naturals where
   ... | just x      = just (suc-suc-even x)
   ... | nothing     = nothing
   
+  infixl 6 _+_
+
   _+_ : ℕ → ℕ → ℕ
   zero  + y  = y
   suc x + y = suc (x + y)
-  
-  infixl 6 _+_
+
+  infixl 7 _*_
 
   module Example-Silly where
     open Chapter1-Agda
@@ -92,8 +94,6 @@ module Sandbox-Naturals where
   _*_ : ℕ → ℕ → ℕ
   zero  * b  = zero
   suc a * b = b + a * b
-  
-  infixl 7 _*_
   
   _^_ : ℕ → ℕ → ℕ
   a ^ zero  = one
@@ -119,17 +119,17 @@ module Misstep-Integers where
   normalize (mkℤ (suc x) zero)    = mkℤ (suc x) zero
   normalize (mkℤ (suc x) (suc y)) = mkℤ x y
   
+  infixl 5 _+_
+
   _+_ : ℤ → ℤ → ℤ
   mkℤ pos neg + mkℤ pos₁ neg₁
     = normalize (mkℤ (pos ℕ.+ pos₁) (neg ℕ.+ neg₁))
   
-  infixl 5 _+_
-  
+  infixl 5 _-_
+
   _-_ : ℤ → ℤ → ℤ
   mkℤ pos neg - mkℤ pos₁ neg₁
     = normalize (mkℤ (pos ℕ.+ neg₁) (neg ℕ.+ pos₁))
-  
-  infixl 5 _-_
   
   _*_ : ℤ → ℤ → ℤ
   mkℤ pos neg * mkℤ pos₁ neg₁
@@ -145,10 +145,12 @@ module Sandbox-Integers where
     +_     : ℕ → ℤ
     -[1+_] : ℕ → ℤ
   
-  pattern +[0] = + ℕ.zero
-  pattern -[1] = -[1+ ℕ.zero ]
-  pattern +[1+_] n = + ℕ.suc n
-  pattern -[2+_] n = -[1+ ℕ.suc n ]
+  pattern [0]      = ℕ.zero
+  pattern [1+_] n  = ℕ.suc n
+  pattern +[0]     = + [0]
+  pattern -[1]     = -[1+ [0] ]
+  pattern +[1+_] n = + [1+ n ]
+  pattern -[2+_] n = -[1+ [1+ n ] ]
   
   0ℤ : ℤ
   0ℤ = + 0
@@ -174,3 +176,5 @@ module Sandbox-Integers where
   - +[1+ x ] = -[1+ x ]
   - -[1+ x ] = +[1+ x ]
   
+  module Naive-Addition where
+    
