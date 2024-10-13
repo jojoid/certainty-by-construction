@@ -146,6 +146,7 @@ module Sandbox-Integers where
     -[1+_] : ℕ → ℤ
   
   pattern [1+_] n  = ℕ.suc n
+  pattern +[0]     = + 0
   pattern -[0]     = + 0
   pattern -[1]     = -[1+ 0 ]
   pattern +[1+_] n = + [1+ n ]
@@ -153,33 +154,33 @@ module Sandbox-Integers where
   pattern -[2+_] n = -[1+ [1+ n ] ]
   
   -_ : ℤ → ℤ
-  - (+ 0)    = -[0]
+  - +[0]     = -[0]
   - +[1+ x ] = -[1+ x ]
   - -[1+ x ] = +[1+ x ]
   
   -- suc : ℤ → ℤ
   -- suc (+ x)    = +[1+ x ]
-  -- suc -[1]     = + 0
+  -- suc -[1]     = +[0]
   -- suc -[2+ x ] = -[1+ x ]
 
   suc : ℤ → ℤ
-  suc (+ 0)    = + 1
+  suc +[0]     = + 1
   suc +[1+ x ] = +[2+ x ]
   suc -[1+ x ] = - (+ x)
   
   pred : ℤ → ℤ
-  pred (+ 0)    = -[1]
+  pred +[0]     = -[1]
   pred +[1+ x ] = + x  
   pred -[1+ x ] = -[2+ x ]
   
   module Naive-Addition where
     
     _+_ : ℤ → ℤ → ℤ
-    (+ 0) + x₁           = x₁
-    +[1+ x ] + (+ 0)     = +[1+ x ]
+    +[0] + x₁            = x₁
+    +[1+ x ] + +[0]      = +[1+ x ]
     +[1+ x ] + +[1+ x₁ ] = +[1+ 1 ℕ.+ x ℕ.+ x₁ ]
     +[1+ x ] + -[1+ x₁ ] = {!   !}
-    -[1+ x ] + (+ 0)     = -[1+ x ]
+    -[1+ x ] + +[0]      = -[1+ x ]
     -[1+ x ] + +[1+ x₁ ] = {!   !}
     -[1+ x ] + -[1+ x₁ ] = -[2+ x ℕ.+ x₁ ]
     
