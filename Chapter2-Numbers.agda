@@ -196,4 +196,22 @@ module Sandbox-Integers where
   x * -[1+ 0 ]  = - x
   x * +[2+ x₁ ] = +[1+ x₁ ] * x + x
   x * -[2+ x₁ ] = -[1+ x₁ ] * x - x
-  
+
+open import Data.Nat
+  using (ℕ; zero; suc; _+_; _*_; _^_; _∸_)
+  public
+
+open Sandbox-Naturals
+  using (one; two; three; four)
+  public
+
+open Sandbox-Naturals
+  using (IsEven)
+  renaming ( zero-even    to z-even
+           ; suc-suc-even to ss-even
+           )
+  public
+
+open import Data.Maybe
+  using (Maybe; just; nothing)
+  public
