@@ -36,6 +36,6 @@ module Playground where
   cong f (refl _) = refl (f _)
   
   x+0≡x : (x : ℕ) → x + 0 ≡ x
-  x+0≡x zero = refl 0
+  x+0≡x zero    = refl 0
   x+0≡x (suc x) = cong suc (x+0≡x x)
   
