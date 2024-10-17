@@ -39,3 +39,59 @@ module Playground where
   x+0≡x zero    = refl 0
   x+0≡x (suc x) = cong suc (x+0≡x x)
   
+  +-identityˡ : (x : ℕ) → 0 + x ≡ x
+  +-identityˡ = 0+x≡x
+
+  +-identityʳ : (x : ℕ) → x + 0 ≡ x
+  +-identityʳ = x+0≡x
+  
+  *-identityˡ : (x : ℕ) → 1 * x ≡ x
+  *-identityˡ zero    = refl 0
+  *-identityˡ (suc x) = cong suc (*-identityˡ x)
+  
+  *-identityʳ : (x : ℕ) → x * 1 ≡ x
+  *-identityʳ zero    = refl 0
+  *-identityʳ (suc x) = cong suc (*-identityʳ x)
+  
+  ∸-identityʳ : (x : ℕ) → x ∸ 0 ≡ x
+  ∸-identityʳ x = refl x
+  
+  ^-identityʳ : (x : ℕ) → x ^ 1 ≡ x
+  ^-identityʳ zero    = refl 0
+  ^-identityʳ (suc x) = cong suc (^-identityʳ x)
+  
+  ∨-identityˡ : (x : Bool) → false ∨ x ≡ x
+  ∨-identityˡ x = refl x
+
+  ∨-identityʳ : (x : Bool) → x ∨ false ≡ x
+  ∨-identityʳ false = refl false
+  ∨-identityʳ true  = refl true
+  
+  ∧-identityˡ : (x : Bool) → true ∧ x ≡ x
+  ∧-identityˡ x = refl x
+  
+  ∧-identityʳ : (x : Bool) → x ∧ true ≡ x
+  ∧-identityʳ false = refl false
+  ∧-identityʳ true  = refl true
+  
+  *-zeroˡ : (x : ℕ) → 0 * x ≡ 0
+  *-zeroˡ x = refl 0
+
+  *-zeroʳ : (x : ℕ) → x * 0 ≡ 0
+  *-zeroʳ zero    = refl 0 
+  *-zeroʳ (suc x) = *-zeroʳ x
+  
+  ∨-zeroˡ : (x : Bool) → true ∨ x ≡ true
+  ∨-zeroˡ x = refl true
+  
+  ∨-zeroʳ : (x : Bool) → x ∨ true ≡ true
+  ∨-zeroʳ false = refl true
+  ∨-zeroʳ true  = refl true
+  
+  ∧-zeroˡ : (x : Bool) → false ∧ x ≡ false
+  ∧-zeroˡ x = refl false
+
+  ∧-zeroʳ : (x : Bool) → x ∧ false ≡ false
+  ∧-zeroʳ false = refl false
+  ∧-zeroʳ true  = refl false
+  
