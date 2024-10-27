@@ -36,7 +36,7 @@ module Playground where
   cong f (refl _) = refl (f _)
   
   x+0≡x : (x : ℕ) → x + 0 ≡ x
-  x+0≡x zero    = refl 0
+  x+0≡x 0       = refl 0
   x+0≡x (suc x) = cong suc (x+0≡x x)
   
   +-identityˡ : (x : ℕ) → 0 + x ≡ x
@@ -46,18 +46,17 @@ module Playground where
   +-identityʳ = x+0≡x
   
   *-identityˡ : (x : ℕ) → 1 * x ≡ x
-  *-identityˡ zero    = refl 0
-  *-identityˡ (suc x) = cong suc (*-identityˡ x)
+  *-identityˡ = +-identityʳ
   
   *-identityʳ : (x : ℕ) → x * 1 ≡ x
-  *-identityʳ zero    = refl 0
+  *-identityʳ 0       = refl 0
   *-identityʳ (suc x) = cong suc (*-identityʳ x)
   
   ∸-identityʳ : (x : ℕ) → x ∸ 0 ≡ x
   ∸-identityʳ x = refl x
   
   ^-identityʳ : (x : ℕ) → x ^ 1 ≡ x
-  ^-identityʳ zero    = refl 0
+  ^-identityʳ 0       = refl 0
   ^-identityʳ (suc x) = cong suc (^-identityʳ x)
   
   ∨-identityˡ : (x : Bool) → false ∨ x ≡ x
@@ -78,7 +77,7 @@ module Playground where
   *-zeroˡ x = refl 0
 
   *-zeroʳ : (x : ℕ) → x * 0 ≡ 0
-  *-zeroʳ zero    = refl 0 
+  *-zeroʳ 0       = refl 0 
   *-zeroʳ (suc x) = *-zeroʳ x
   
   ∨-zeroˡ : (x : Bool) → true ∨ x ≡ true
@@ -94,4 +93,19 @@ module Playground where
   ∧-zeroʳ : (x : Bool) → x ∧ false ≡ false
   ∧-zeroʳ false = refl false
   ∧-zeroʳ true  = refl false
+  
+  sym : {A : Set} → {x y : A} → x ≡ y → y ≡ x
+  sym (refl _) = refl _
+  
+  *-identityˡ′ : (x : ℕ) → x ≡ 1 * x
+  *-identityˡ′ _ = sym (*-identityˡ _)
+  
+  sym-involutive
+    : {A : Set} → {x y : A}
+    → (p : x ≡ y) → sym (sym p) ≡ p
+  sym-involutive (refl _) = refl _
+  
+  not-ininvolutive : (x : Bool) → not (not x) ≡ x
+  not-ininvolutive false = refl false
+  not-ininvolutive true = refl true
   

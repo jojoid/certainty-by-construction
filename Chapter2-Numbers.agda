@@ -92,7 +92,7 @@ module Sandbox-Naturals where
   infixl 7 _*_
   
   _*_ : ℕ → ℕ → ℕ
-  zero  * b  = zero
+  zero  * b = zero
   suc a * b = b + a * b
   
   _^_ : ℕ → ℕ → ℕ
@@ -101,7 +101,7 @@ module Sandbox-Naturals where
   
   _∸_ : ℕ → ℕ → ℕ
   x     ∸ zero      = x
-  zero  ∸ suc y  = zero
+  zero  ∸ suc y = zero
   suc x ∸ suc y = x ∸ y
 
 module Misstep-Integers where
