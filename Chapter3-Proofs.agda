@@ -94,7 +94,10 @@ module Playground where
   ∧-zeroʳ false = refl false
   ∧-zeroʳ true  = refl false
   
-  sym : {A : Set} → {x y : A} → x ≡ y → y ≡ x
+  sym
+    : {A : Set} → {x y : A}
+    → x ≡ y
+    → y ≡ x
   sym (refl _) = refl _
   
   *-identityˡ′ : (x : ℕ) → x ≡ 1 * x
@@ -108,4 +111,27 @@ module Playground where
   not-ininvolutive : (x : Bool) → not (not x) ≡ x
   not-ininvolutive false = refl false
   not-ininvolutive true = refl true
+  
+  trans
+    : {A : Set} → {x y z : A}
+    → x ≡ y
+    → y ≡ z
+    → x ≡ z
+  trans (refl _) (refl _) = refl _
+  
+  a^1≡a+b*0 : (a b : ℕ) → a ^ 1 ≡ a + b * zero
+  a^1≡a+b*0 a b
+    = trans (^-identityʳ a)
+    (trans
+      (sym (+-identityʳ a))
+      (cong (λ φ → a + φ) (sym (*-zeroʳ b)))
+    )
+  
+  a^1≡a+b*0′ : (a b : ℕ) → a ^ 1 ≡ a + b * zero
+  a^1≡a+b*0′ a b
+    = trans (^-identityʳ a)
+    (trans
+      (sym (+-identityʳ a))
+      (cong (a +_) (sym (*-zeroʳ b)))
+    )
   
