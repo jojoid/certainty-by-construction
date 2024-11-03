@@ -135,3 +135,57 @@ module Playground where
       (cong (a +_) (sym (*-zeroʳ b)))
     )
   
+  _! : ℕ → ℕ
+  zero !  = 1
+  suc n ! = suc n * n !
+  
+  infixr 20 ∣_
+
+  ∣_ : ℕ → ℕ
+  ∣_ = suc
+
+  □ : ℕ
+  □ = zero
+  
+  five : ℕ
+  five = ∣ ∣ ∣ ∣ ∣ □
+
+  infixr 20 _‽_⦂_
+  
+  _‽_⦂_ : {A : Set} → Bool → A → A → A
+  false ‽ t ⦂ f = f
+  true  ‽ t ⦂ f = t
+  
+  _ : ℕ
+  _ = not true ‽ 4 ⦂ 1
+
+  infixr 20 if_then_else_
+  
+  if_then_else_ : {A : Set} → Bool → A → A → A
+  if_then_else_ = _‽_⦂_
+  
+  _ : ℕ
+  _ = if not true then 4 else 1
+  
+  _ : ℕ
+  _ =
+    if not true
+      then 4
+    else if true
+      then 1
+    else
+      0
+  
+  case_of_ : {A B : Set} → A → (A → B) → B
+  case e of f = f e
+  
+  _ : ℕ
+  _ =
+    case not true of λ
+      { false → 1
+      ; true  → 4
+      }
+  
+  _is-equal-to_ : {A : Set} → A → A → Set
+  x is-equal-to y = x ≡ y
+  
