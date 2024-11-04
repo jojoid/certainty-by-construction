@@ -1,6 +1,8 @@
 module Chapter3-Proofs where
+
 open import Chapter1-Agda
   using (Bool; true; false; _∨_; _∧_; not)
+
 open import Chapter2-Numbers
   using (ℕ; zero; suc)
 
@@ -271,6 +273,52 @@ module Playground where
   +-comm (suc x) y = begin
     suc (x + y) ≡⟨ cong suc (+-comm x y) ⟩
     suc (y + x) ≡⟨ sym (+-suc y x) ⟩
-    y + suc x ∎
+    y + suc x   ∎
     where open ≡-Reasoning
   
+  suc-injective
+    : {x y : ℕ}
+    → suc x ≡ suc y
+    → x ≡ y
+  suc-injective (refl (suc x)) = refl x
+
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; module ≡-Reasoning)
+  public
+
+module PropEq where
+  open Relation.Binary.PropositionalEquality
+    using (refl; cong; sym; trans)
+    public
+
+open import Data.Bool
+  using (if_then_else_)
+  public
+
+open import Function
+  using (case_of_)
+  public
+
+open import Data.Bool.Properties
+  using
+    ( ∨-identityˡ ; ∨-identityʳ
+    ; ∨-zeroˡ     ; ∨-zeroʳ
+    ; ∨-assoc     ; ∧-assoc
+    ; ∧-identityˡ ; ∧-identityʳ
+    ; ∧-zeroˡ     ; ∧-zeroʳ
+    ; not-involutive
+    )
+  public
+
+open import Data.Nat.Properties
+  using
+    ( +-identityˡ  ; +-identityʳ
+    ; *-identityˡ  ; *-identityʳ
+    ; *-zeroˡ      ; *-zeroʳ
+    ; +-assoc      ; *-assoc
+    ; +-comm       ; *-comm
+    ; ^-identityʳ
+    ; +-suc        ; suc-injective
+    ; *-distribˡ-+ ; *-distribʳ-+
+    )
+  public
