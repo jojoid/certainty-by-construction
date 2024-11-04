@@ -189,3 +189,49 @@ module Playground where
   _is-equal-to_ : {A : Set} → A → A → Set
   x is-equal-to y = x ≡ y
   
+  module ≡-Reasoning where
+  
+    infix 3 _∎
+    infixr 2 _≡⟨⟩_
+    infixr 2 _≡⟨_⟩_
+    infix 1 begin_
+    
+    _∎ : {A : Set} → (x : A) → x ≡ x
+    x ∎ = refl x
+    
+    _≡⟨⟩_
+      : {A : Set} {y : A}
+      → (x : A)
+      → x ≡ y
+      → x ≡ y
+    x ≡⟨⟩ p = p
+    
+    _ : 4 ≡ suc (1 + 2)
+    _ =
+      4           ≡⟨⟩
+      2 + 2       ≡⟨⟩
+      suc 1 + 2   ≡⟨⟩
+      suc (1 + 2) ∎
+
+    _≡⟨_⟩_
+      : {A : Set} {y z : A}
+      → (x : A)
+      → x ≡ y
+      → y ≡ z
+      → x ≡ z
+    x ≡⟨ j ⟩ p = trans j p
+
+    begin_
+      : {A : Set} {x y : A}
+      → x ≡ y
+      → x ≡ y
+    begin_ p = p
+    
+  a^1≡a+b*0′′ : (a b : ℕ) → a ^ 1 ≡ a + b * zero
+  a^1≡a+b*0′′ a b = begin
+    a ^ 1     ≡⟨ ^-identityʳ a ⟩
+    a         ≡⟨ sym (+-identityʳ a) ⟩
+    a + 0     ≡⟨ cong (a +_) (sym (*-zeroʳ b)) ⟩
+    a + b * 0 ∎
+    where open ≡-Reasoning
+  
