@@ -235,3 +235,42 @@ module Playground where
     a + b * 0 ∎
     where open ≡-Reasoning
   
+  ∨-assoc
+    : (a b c : Bool)
+    → (a ∨ b) ∨ c ≡ a ∨ (b ∨ c)
+  ∨-assoc false b c = refl (b ∨ c)
+  ∨-assoc true  b c = refl true
+  
+  ∧-assoc
+    : (a b c : Bool)
+    → (a ∧ b) ∧ c ≡ a ∧ (b ∧ c)
+  ∧-assoc false b c = refl false
+  ∧-assoc true  b c = refl (b ∧ c)
+  
+  +-assoc
+    : (x y z : ℕ)
+    → (x + y) + z ≡ x + (y + z)
+  +-assoc zero y z    = refl (y + z)
+  +-assoc (suc x) y z = begin
+    suc x + y + z     ≡⟨⟩
+    suc (x + y + z)   ≡⟨ cong suc (+-assoc x y z) ⟩
+    suc (x + (y + z)) ≡⟨⟩
+    suc x + (y + z)   ∎
+    where open ≡-Reasoning
+  
+  +-suc
+    : (x y : ℕ)
+    → x + suc y ≡ suc (x + y)
+  +-suc zero    y = refl (suc y)
+  +-suc (suc x) y = cong suc (+-suc x y)
+  
+  +-comm
+    : (x y : ℕ)
+    → x + y ≡ y + x
+  +-comm zero    y = sym (+-identityʳ y)
+  +-comm (suc x) y = begin
+    suc (x + y) ≡⟨ cong suc (+-comm x y) ⟩
+    suc (y + x) ≡⟨ sym (+-suc y x) ⟩
+    y + suc x ∎
+    where open ≡-Reasoning
+  
