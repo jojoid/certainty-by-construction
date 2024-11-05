@@ -281,6 +281,80 @@ module Playground where
     → suc x ≡ suc y
     → x ≡ y
   suc-injective (refl (suc x)) = refl x
+  
+  *-suc : (x y : ℕ) → x * suc y ≡ x + x * y
+  *-suc zero    y = refl zero
+  *-suc (suc x) y = begin
+    suc x * suc y
+      ≡⟨⟩
+    suc y + x * suc y
+      ≡⟨ cong (λ φ → suc y + φ) (*-suc x y) ⟩
+    suc (y + (x + x * y))
+      ≡⟨ cong suc (sym (+-assoc y x (x * y))) ⟩
+    suc (y + x) + x * y
+      ≡⟨ cong (λ φ → suc (φ + x * y)) (+-comm y x) ⟩
+    suc (x + y + x * y)
+      ≡⟨ cong suc (+-assoc x y (x * y)) ⟩
+    suc x + (y + x * y)
+      ≡⟨⟩
+    suc x + suc x * y ∎
+    where open ≡-Reasoning
+  
+  *-comm : (x y : ℕ) → x * y ≡ y * x
+  *-comm zero    y = sym (*-zeroʳ y)
+  *-comm (suc x) y = begin
+    suc x * y
+      ≡⟨⟩
+    y + x * y
+      ≡⟨ cong (λ φ → y + φ) (*-comm x y) ⟩
+    y + y * x
+      ≡⟨ sym (*-suc y x) ⟩
+    y * suc x ∎
+    where open ≡-Reasoning
+  
+  *-distribʳ-+ : (x y z : ℕ)
+    → (y + z) * x ≡ y * x + z * x
+  *-distribʳ-+ x zero    z = refl (z * x)
+  *-distribʳ-+ x (suc y) z = begin
+    suc (y + z) * x
+      ≡⟨⟩
+    x + (y + z) * x
+      ≡⟨ cong (λ φ → x + φ) (*-distribʳ-+ x y z) ⟩
+    x + (y * x + z * x)
+      ≡⟨ sym (+-assoc x (y * x) (z * x)) ⟩
+    x + y * x + z * x
+      ≡⟨⟩
+    suc y * x + z * x ∎
+    where open ≡-Reasoning
+  
+  *-distribˡ-+ : (x y z : ℕ)
+    → x * (y + z) ≡ x * y + x * z
+  *-distribˡ-+ x y z = begin
+    x * (y + z)
+      ≡⟨ *-comm x (y + z) ⟩
+    (y + z) * x
+      ≡⟨ *-distribʳ-+ x y z ⟩
+    y * x + z * x
+      ≡⟨ cong (λ φ → φ + z * x) (*-comm y x) ⟩
+    x * y + z * x
+      ≡⟨ cong (λ φ → x * y + φ) (*-comm z x) ⟩
+    x * y + x * z ∎
+    where open ≡-Reasoning
+  
+  *-assoc : (x y z : ℕ)
+    → (x * y) * z ≡ x * (y * z)
+  *-assoc zero    y z = refl zero
+  *-assoc (suc x) y z = begin
+    suc x * y * z
+      ≡⟨⟩
+    (y + x * y) * z
+      ≡⟨ *-distribʳ-+ z y (x * y) ⟩
+    y * z + x * y * z
+      ≡⟨ cong (λ φ → y * z + φ) (*-assoc x y z) ⟩
+    y * z + x * (y * z)
+      ≡⟨⟩
+    suc x * (y * z) ∎
+    where open ≡-Reasoning
 
 open import Relation.Binary.PropositionalEquality
   using (_≡_; module ≡-Reasoning)
