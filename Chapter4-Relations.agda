@@ -32,12 +32,31 @@ module Playground-Level where
   _ = just₁ ℕ
   
   private variable
-    ℓ ℓ₁ ℓ₂ a b c : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    ℓ : Level
   
   data Maybe₂ (A : Set ℓ) : Set ℓ where
     just₂    : A → Maybe₂ A
     nothing₂ : Maybe₂ A
+
+private variable
+  ℓ ℓ₁ ℓ₂ a b c : Level
+  A : Set a
+  B : Set b
+  C : Set c
+
+module Definition-DependentPair where
+
+  open Chapter3-Proofs
   
+  record Σ (A : Set ℓ₁) (B : A → Set ℓ₂)
+    : Set (lsuc (ℓ₁ ⊔ ℓ₂)) where
+    constructor _,_
+    field
+      proj₁ : A
+      proj₂ : B proj₁
+  
+  ∃n,n+1≡5 : Σ ℕ (λ n → n + 1 ≡ 5)
+  ∃n,n+1≡5 = 4 , PropEq.refl
+
+open import Data.Product
+  using (Σ; _,_)
