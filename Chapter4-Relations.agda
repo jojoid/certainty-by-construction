@@ -140,3 +140,16 @@ module Naive-≤₁ where
     with ≤-refl {x}
   ... | x≤x = suc-mono x≤x
   
+  open Chapter3-Proofs
+    using (+-identityʳ)
+  
+  subst : {a ℓ : Level} {A : Set a} {x y : A}
+    → (P : A → Set ℓ)
+    → x ≡ y
+    → P x
+    → P y
+  subst P PropEq.refl px = px
+
+  ≤-refl′ : Reflexive _≤_
+  ≤-refl′ {x} = subst (λ φ → x ≤ φ) (+-identityʳ x) (lte x 0)
+  
