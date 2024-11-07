@@ -100,4 +100,19 @@ module Sandbox-Relations where
 
     data _≡₂_ {a : Level} {A : Set a} : Rel A a where
       refl : {x : A} → x ≡₂ x
-    
+  
+  Reflexive : {a ℓ : Level} {A : Set a}
+    → Rel A ℓ → Set (a ⊔ ℓ)
+  Reflexive {A = A} _~_
+    = {x : A} → x ~ x
+  
+  Symmetric : {a ℓ : Level} {A : Set a}
+    → Rel A ℓ → Set (a ⊔ ℓ)
+  Symmetric {A = A} _~_
+    = {x y : A} → x ~ y → y ~ x
+  
+  Transitive : {a ℓ : Level} {A : Set a}
+    → Rel A ℓ → Set (a ⊔ ℓ)
+  Transitive {A = A} _~_
+    = {x y z : A} → x ~ y → y ~ z → x ~ z
+  
