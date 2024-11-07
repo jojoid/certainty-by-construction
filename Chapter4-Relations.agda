@@ -115,4 +115,28 @@ module Sandbox-Relations where
     → Rel A ℓ → Set (a ⊔ ℓ)
   Transitive {A = A} _~_
     = {x y z : A} → x ~ y → y ~ z → x ~ z
+
+open import Relation.Binary
+  using (Rel; Reflexive; Transitive; Symmetric)
+
+module Naive-≤₁ where
+  
+  infix 4 _≤_
+  
+  data _≤_ : Rel ℕ lzero where
+    lte : (a b : ℕ) → a ≤ a + b
+  
+  _ : 2 ≤ 5
+  _ = lte 2 3
+  
+  suc-mono : {x y : ℕ}
+    → x ≤ y
+    → suc x ≤ suc y
+  suc-mono (lte x b) = lte (suc x) b
+  
+  ≤-refl : Reflexive _≤_
+  ≤-refl {zero} = lte 0 0 
+  ≤-refl {suc x}
+    with ≤-refl {x}
+  ... | x≤x = suc-mono x≤x
   
