@@ -135,7 +135,7 @@ module Naive-≤₁ where
   suc-mono (lte x b) = lte (suc x) b
   
   ≤-refl : Reflexive _≤_
-  ≤-refl {zero} = lte 0 0 
+  ≤-refl {zero} = lte zero zero
   ≤-refl {suc x}
     with ≤-refl {x}
   ... | x≤x = suc-mono x≤x
@@ -149,7 +149,16 @@ module Naive-≤₁ where
     → P x
     → P y
   subst P PropEq.refl px = px
-
+  
   ≤-refl′ : Reflexive _≤_
   ≤-refl′ {x} = subst (λ φ → x ≤ φ) (+-identityʳ x) (lte x 0)
   
+  suc-mono′ : {x y : ℕ}
+    → x ≤ y
+    → suc x ≤ suc y
+  suc-mono′ {x} {.(x + b)} (lte .x b) = lte (suc x) b
+  
+  suc-mono-mono : {x : ℕ}
+    → x ≤ x
+    → suc x ≤ suc x
+  suc-mono-mono = suc-mono′
