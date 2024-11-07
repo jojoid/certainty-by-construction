@@ -61,7 +61,7 @@ module Sandbox-Relations where
     → Set (a ⊔ b ⊔ lsuc ℓ)
   REL A B ℓ = A → B → Set ℓ
 
-  data _maps_↦_ {a b : Level} {A : Set a} {B : Set b} : (A → B) → A → B → Set (a ⊔ b) where
+  data _maps_↦_ {a b : Level} {A : Set a} {B : Set b} : (A → B) → REL A B (a ⊔ b) where
     app : {f : A → B} {x : A} → f maps x ↦ f x
   
   _ : not maps false ↦ true
@@ -71,19 +71,19 @@ module Sandbox-Relations where
   _ = app
   
   Functional : {a b : Level} {A : Set a} {B : Set b}
-    → (A → B → Set (a ⊔ b))
+    → (REL A B (a ⊔ b))
     → Set (a ⊔ b)
   Functional {A = A} {B = B} _~_
     = {x : A} {y z : B} → x ~ y → x ~ z → y ≡ z
   
   Total : {a b : Level} {A : Set a} {B : Set b}
-    → (A → B → Set (a ⊔ b))
+    → (REL A B (a ⊔ b))
     → Set (a ⊔ b)
   Total {A = A} {B = B} _~_
     = (x : A) → Σ B (λ y → x ~ y)
   
   relToFn : {a b : Level} {A : Set a} {B : Set b}
-    → (_~_ : A → B → Set (a ⊔ b))
+    → (_~_ : REL A B (a ⊔ b))
     → Functional _~_
     → Total _~_
     → A
@@ -92,3 +92,12 @@ module Sandbox-Relations where
     with total x
   ... | y , _ = y
   
+  Rel : {a : Level}
+    → Set a → (ℓ : Level) → Set (a ⊔ lsuc ℓ)
+  Rel A ℓ = REL A A ℓ
+  
+  module Example₂ where
+
+    data _≡₂_ {a : Level} {A : Set a} : Rel A a where
+      refl : {x : A} → x ≡₂ x
+    
