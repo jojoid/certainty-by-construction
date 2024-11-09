@@ -121,10 +121,9 @@ open import Relation.Binary
 
 module Naive-≤₁ where
   
-  infix 4 _≤_
-  
   data _≤_ : Rel ℕ lzero where
     lte : (a b : ℕ) → a ≤ a + b
+  infix 4 _≤_
   
   _ : 2 ≤ 5
   _ = lte 2 3
@@ -162,3 +161,31 @@ module Naive-≤₁ where
     → x ≤ x
     → suc x ≤ suc x
   suc-mono-mono = suc-mono′
+
+module Definition-LessThanOrEqualTo where
+  
+  infix 4 _≤_
+
+  data _≤_ : Rel ℕ lzero where
+    z≤n : {n : ℕ} → zero ≤ n
+    s≤s : {m n : ℕ} → m ≤ n → suc m ≤ suc n
+  
+open import Data.Nat
+  using (_≤_; z≤n; s≤s)
+
+module Sandbox-≤ where
+  
+  _ : 2 ≤ 5
+  _ = s≤s (s≤s z≤n)
+  
+  suc-mono : {x y : ℕ} → x ≤ y → suc x ≤ suc y
+  suc-mono = s≤s
+  
+  ≤-refl : {x : ℕ} → x ≤ x
+  ≤-refl {zero}  = z≤n
+  ≤-refl {suc x} = s≤s ≤-refl
+  
+  ≤-trans : {x y z : ℕ} → x ≤ y → y ≤ z → x ≤ z
+  ≤-trans z≤n       y≤z       = z≤n
+  ≤-trans (s≤s x≤y) (s≤s y≤z) = s≤s (≤-trans x≤y y≤z)
+  
