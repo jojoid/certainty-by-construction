@@ -61,6 +61,11 @@ module Sandbox-Relations where
     → Set (a ⊔ b ⊔ lsuc ℓ)
   REL A B ℓ = A → B → Set ℓ
 
+  data Unrelated {a b : Level} {A : Set a} {B : Set b} : REL A B lzero where
+  
+  data Related {A : Set} {B : Set} : REL A B lzero where
+    related : {x : A} {y : B} → Related x y
+  
   data _maps_↦_ {a b : Level} {A : Set a} {B : Set b} : (A → B) → REL A B (a ⊔ b) where
     app : {f : A → B} {x : A} → f maps x ↦ f x
   
@@ -188,4 +193,26 @@ module Sandbox-≤ where
   ≤-trans : {x y z : ℕ} → x ≤ y → y ≤ z → x ≤ z
   ≤-trans z≤n       y≤z       = z≤n
   ≤-trans (s≤s x≤y) (s≤s y≤z) = s≤s (≤-trans x≤y y≤z)
+
+module Sandbox-Preorders where
+
+  open Sandbox-≤
+
+  record IsPreorder {a ℓ : Level} {A : Set a} (_~_ : Rel A ℓ) : Set (a ⊔ ℓ) where
+    field
+      refl  : Reflexive  _~_
+      trans : Transitive _~_
+  
+  ≤-preorder : IsPreorder _≤_
+  IsPreorder.refl  ≤-preorder = ≤-refl
+  IsPreorder.trans ≤-preorder = ≤-trans
+  
+  ≡-preorder : {a : Level} {A : Set a} → IsPreorder (_≡_ {A = A})
+  IsPreorder.refl  ≡-preorder = PropEq.refl
+  IsPreorder.trans ≡-preorder = PropEq.trans
+  
+  open Sandbox-Relations using (Related; related)
+
+  Related-preorder : {A : Set} → IsPreorder (Related {A = A})
+  Related-preorder = record { refl = related ; trans = λ _ _ → related }
   
