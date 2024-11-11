@@ -202,17 +202,43 @@ module Sandbox-Preorders where
     field
       refl  : Reflexive  _~_
       trans : Transitive _~_
-  
+
   ≤-preorder : IsPreorder _≤_
   IsPreorder.refl  ≤-preorder = ≤-refl
   IsPreorder.trans ≤-preorder = ≤-trans
-  
+
   ≡-preorder : {a : Level} {A : Set a} → IsPreorder (_≡_ {A = A})
   IsPreorder.refl  ≡-preorder = PropEq.refl
   IsPreorder.trans ≡-preorder = PropEq.trans
-  
+
   open Sandbox-Relations using (Related; related)
 
   Related-preorder : {A : Set} → IsPreorder (Related {A = A})
   Related-preorder = record { refl = related ; trans = λ _ _ → related }
-  
+
+  module Preorder-Reasoning
+    {a ℓ : Level} {A : Set a} {_~_ : Rel A ℓ}
+    (~-preorder : IsPreorder _~_) where
+
+    open IsPreorder ~-preorder public
+
+    infix 1 begin_
+    infix 3 _∎
+    infixr 2 _≡⟨⟩_
+    infixr 2 _≈⟨_⟩_
+    infixr 2 _≡⟨_⟩_
+
+    begin_ : {x y : A} → x ~ y → x ~ y
+    begin_ x~y = x~y
+
+    _∎ : (x : A) → x ~ x
+    x ∎ = refl
+
+    _≡⟨⟩_ : (x : A) → {y : A} → x ~ y → x ~ y
+    x ≡⟨⟩ p = p
+
+    _≈⟨_⟩_ : (x : A) → ∀ {y z} → x ~ y → y ~ z → x ~ z
+    _ ≈⟨ x~y ⟩ y~z = trans x~y y~z
+
+    _≡⟨_⟩_ : (x : A) → ∀ {y z} → x ≡ y → y ~ z → x ~ z
+    _ ≡⟨ PropEq.refl ⟩ y~z = y~z
