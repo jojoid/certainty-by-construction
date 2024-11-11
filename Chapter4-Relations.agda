@@ -242,3 +242,22 @@ module Sandbox-Preorders where
 
     _≡⟨_⟩_ : (x : A) → ∀ {y z} → x ≡ y → y ~ z → x ~ z
     _ ≡⟨ PropEq.refl ⟩ y~z = y~z
+
+  n≤1+n : (n : ℕ) → n ≤ 1 + n
+  n≤1+n zero    = z≤n
+  n≤1+n (suc n) = s≤s (n≤1+n n)
+
+  open Chapter3-Proofs using (+-comm)
+
+  module ≤-Reasoning where
+
+    open Preorder-Reasoning ≤-preorder
+      renaming (_≈⟨_⟩_ to _≤⟨_⟩_)
+      public
+
+  n≤n+1 : (n : ℕ) → n ≤ n + 1
+  n≤n+1 n = begin
+    n     ≤⟨ n≤1+n n ⟩
+    1 + n ≡⟨ +-comm 1 n ⟩
+    n + 1 ∎
+    where open ≤-Reasoning
