@@ -261,3 +261,21 @@ module Sandbox-Preorders where
     1 + n ≡⟨ +-comm 1 n ⟩
     n + 1 ∎
     where open ≤-Reasoning
+
+  module Reachability
+    {ℓ₁ ℓ₂ : Level} {V : Set ℓ₁}
+    (_⇒_ : Rel V ℓ₂) where
+
+    data Path : Rel V (ℓ₁ ⊔ ℓ₂) where
+      ↪_  : {v₁ v₂ : V}
+        → v₁ ⇒ v₂
+        → Path v₁ v₂
+      here : {v : V}
+        → Path v v
+      connect : {v₁ v₂ v₃ : V}
+        → Path v₁ v₂
+        → Path v₂ v₃
+        → Path v₁ v₃
+
+    Path-preorder : IsPreorder Path
+    Path-preorder = record { refl = here ; trans = connect }
