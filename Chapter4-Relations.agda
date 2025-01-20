@@ -338,3 +338,25 @@ module Sandbox-Preorders where
   
   _ : Antisymmetric _≡_ _≤_
   _ = ≤-antisym
+
+  module _ {a ℓ : Level} {A : Set a} where
+
+    record IsEquivalence (_~_ : Rel A a) : Set a where
+      field
+        isPreorder : IsPreorder _~_
+        sym        : Symmetric  _~_
+      
+      open IsPreorder isPreorder public
+    
+    record IsPartialOrder (_~_ : Rel ℕ lzero) : Set where
+      field
+        isPreorder : IsPreorder _~_
+        antisym    : Antisymmetric _≡_ _~_
+    
+    ≡-equiv : IsEquivalence _≡_
+    IsEquivalence.isPreorder ≡-equiv = ≡-preorder
+    IsEquivalence.sym        ≡-equiv = PropEq.sym
+
+    ≤-poset : IsPartialOrder _≤_
+    IsPartialOrder.isPreorder ≤-poset = ≤-preorder
+    IsPartialOrder.antisym    ≤-poset = ≤-antisym
