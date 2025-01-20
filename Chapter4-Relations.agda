@@ -279,3 +279,47 @@ module Sandbox-Preorders where
 
     Path-preorder : IsPreorder Path
     Path-preorder = record { refl = here ; trans = connect }
+
+  module Example-AboutABoy where
+
+    data Person : Set where
+      ellie fiona marcus rachel susie will : Person
+    
+    data _IsFriendsWith_ : Rel Person lzero where
+      marcus-will  : marcus IsFriendsWith will
+      marcus-fiona : marcus IsFriendsWith fiona
+      fiona-susie  : fiona  IsFriendsWith susie
+      sym : {p₁ p₂ : Person}
+        → p₁ IsFriendsWith p₂
+        → p₂ IsFriendsWith p₁
+    
+    data _IsInterestedIn_ : Rel Person lzero where
+      marcus-ellie : marcus IsInterestedIn ellie
+      will-rachel  : will   IsInterestedIn rachel
+      rachel-will  : rachel IsInterestedIn will
+      susie-will   : susie  IsInterestedIn will
+    
+    data SocialTie : Rel Person lzero where
+      friendship : {p₁ p₂ : Person}
+        → p₁ IsFriendsWith p₂
+        → SocialTie p₁ p₂
+      interest : {p₁ p₂ : Person}
+        → p₁ IsInterestedIn p₂
+        → SocialTie p₁ p₂
+    
+    open Reachability SocialTie
+
+    will-fiona : Path will fiona
+    will-fiona = begin
+      will   ≈⟨ ↪ friendship (sym marcus-will) ⟩
+      marcus ≈⟨ ↪ friendship marcus-fiona ⟩
+      fiona ∎
+      where open Preorder-Reasoning Path-preorder
+    
+    rachel-ellie : Path rachel ellie
+    rachel-ellie = begin
+      rachel ≈⟨ ↪ interest rachel-will ⟩
+      will   ≈⟨ ↪ friendship (sym marcus-will) ⟩
+      marcus ≈⟨ ↪ interest marcus-ellie ⟩
+      ellie ∎
+      where open Preorder-Reasoning Path-preorder
