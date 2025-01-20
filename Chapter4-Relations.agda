@@ -323,3 +323,18 @@ module Sandbox-Preorders where
       marcus ≈⟨ ↪ interest marcus-ellie ⟩
       ellie ∎
       where open Preorder-Reasoning Path-preorder
+  
+  ≤-antisym : {m n : ℕ} → m ≤ n → n ≤ m → m ≡ n
+  ≤-antisym z≤n z≤n = PropEq.refl 
+  ≤-antisym (s≤s m≤n) (s≤s n≤m) =
+    PropEq.cong suc (≤-antisym m≤n n≤m)
+  
+  Antisymmetric : {a ℓ₁ ℓ₂ : Level} {A : Set a}
+    → Rel A ℓ₁
+    → Rel A ℓ₂
+    → Set _
+  Antisymmetric _≈_ _≤_ =
+    ∀ {x y} → x ≤ y → y ≤ x → x ≈ y
+  
+  _ : Antisymmetric _≡_ _≤_
+  _ = ≤-antisym
