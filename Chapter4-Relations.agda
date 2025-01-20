@@ -355,7 +355,7 @@ module Sandbox-Preorders where
         isPreorder : IsPreorder _~_
         antisym    : Antisymmetric _≡_ _~_
   
-  ≡-equiv : IsEquivalence _≡_
+  ≡-equiv : {a : Level}  {A : Set a} → IsEquivalence (_≡_ {a} {A})
   IsEquivalence.isPreorder ≡-equiv = ≡-preorder
   IsEquivalence.sym        ≡-equiv = PropEq.sym
 
