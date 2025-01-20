@@ -362,3 +362,40 @@ module Sandbox-Preorders where
   ≤-poset : IsPartialOrder _≤_
   IsPartialOrder.isPreorder ≤-poset = ≤-preorder
   IsPartialOrder.antisym    ≤-poset = ≤-antisym
+
+  _<_ : Rel ℕ lzero
+  m < n = m ≤ suc n
+  infix 4 _<_
+
+open import Agda.Primitive
+  using (Level; _⊔_; lzero; lsuc)
+  public
+
+open import Relation.Binary
+  using (Rel; REL; Transitive; Reflexive; Symmetric; Antisymmetric)
+  public
+
+open import Relation.Binary.PropositionalEquality
+  using (subst)
+  public
+
+open import Data.Nat
+  using (_≤_; z≤n; s≤s; _<_)
+  public
+
+open import Data.Nat.Properties
+  using (≤-refl; ≤-trans; ≤-antisym; n≤1+n; module ≤-Reasoning)
+  public
+
+open Sandbox-Preorders
+  using (
+    IsPreorder;
+    IsEquivalence;
+    IsPartialOrder;
+    module Preorder-Reasoning;
+    ≡-preorder;
+    ≡-equiv;
+    ≤-preorder;
+    ≤-poset
+    )
+  public
